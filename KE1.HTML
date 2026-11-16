@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kenya Safari Quiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0D1117;--card:#141a22;--red:#BB0000;--green:#006600;--gold:#D97706;--ink:#F8FAFC;--mut:#94a3b8;--line:rgba(248,250,252,.12);color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100vh;background-color:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;display:flex;align-items:center;justify-content:center;padding:16px;
+background-image:repeating-linear-gradient(0deg,rgba(187,0,0,.11) 0 26px,transparent 26px 52px),repeating-linear-gradient(90deg,rgba(187,0,0,.11) 0 26px,transparent 26px 52px),repeating-linear-gradient(0deg,rgba(248,250,252,.05) 0 2px,transparent 2px 13px),repeating-linear-gradient(90deg,rgba(0,102,102,.12) 0 2px,transparent 2px 13px)}
+h1,h2,.hd{font-family:Outfit,Inter,sans-serif}
+.frame{width:100%;max-width:640px;padding:8px;border-radius:26px;background:repeating-linear-gradient(90deg,#BB0000 0 14px,#D97706 14px 20px,#006600 20px 34px,#F8FAFC 34px 37px,#0D1117 37px 41px);box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.card{position:relative;background:rgba(20,26,34,.96);border-radius:20px;padding:22px;border:1px solid var(--line);box-shadow:inset 0 0 40px rgba(187,0,0,.08)}
+.hide{display:none!important}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.c{text-align:center}
+h1{font-size:clamp(2rem,8vw,2.9rem);font-weight:800;margin:6px 0 4px;line-height:1.05}
+.sub{color:var(--mut);margin:0 0 18px}
+.pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:0 0 20px}
+.pill{border:1px solid var(--line);background:transparent;border-radius:99px;padding:9px 16px;font-weight:600;transition:.15s}
+.pill[aria-pressed=true]{background:var(--red);border-color:var(--red)}
+.go{background:var(--red);border:0;border-radius:14px;padding:15px 34px;font:800 1.1rem Outfit,sans-serif;box-shadow:0 8px 22px rgba(187,0,0,.4);transition:transform .15s}
+.go:hover{transform:translateY(-2px)}
+.best{margin-top:14px;color:var(--gold);font-weight:600;font-size:.9rem}
+.hud{display:flex;justify-content:space-between;align-items:center;font:600 .95rem Outfit,sans-serif;margin-bottom:8px;gap:8px}
+.sc{font-size:1.15rem}.sc b{color:var(--gold)}
+.fl{background:rgba(217,119,6,.15);border:1px solid var(--gold);border-radius:99px;padding:2px 10px;color:var(--gold)}
+.segs{display:flex;gap:4px;margin-bottom:10px}
+.segs i{flex:1;height:5px;border-radius:3px;background:var(--line)}
+.segs i.cur{background:var(--gold)}.segs i.ok{background:var(--green)}.segs i.no{background:var(--red)}
+.tm{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.bar{flex:1;height:8px;border-radius:5px;background:var(--line);overflow:hidden}
+.bar div{height:100%;width:100%;background:var(--green);border-radius:5px;transition:background .3s}
+.tt{font:600 1rem Outfit,sans-serif;min-width:34px;text-align:right;color:var(--gold)}
+.tag{display:inline-block;background:rgba(0,102,0,.25);border:1px solid var(--green);color:#7ddc7d;border-radius:99px;padding:3px 12px;font-size:.8rem;font-weight:600;margin-bottom:12px}
+.q{font-size:clamp(1.15rem,4.5vw,1.45rem);font-weight:600;line-height:1.35;margin:0 0 20px;min-height:3.9em}
+.ans{display:flex;flex-direction:column;gap:10px}
+.opt{display:flex;align-items:center;gap:12px;text-align:left;width:100%;background:rgba(248,250,252,.05);border:1px solid var(--line);border-radius:14px;padding:12px 14px;transition:transform .15s,background .15s,border-color .15s}
+.opt:not(:disabled):hover{transform:translateY(-3px);border-color:var(--gold);background:rgba(248,250,252,.09)}
+.opt b{display:grid;place-items:center;flex:none;width:32px;height:32px;border-radius:9px;background:rgba(248,250,252,.1);font:800 .95rem Outfit,sans-serif}
+.opt span{flex:1}.opt em{font-style:normal;font-weight:800}
+.opt:disabled{cursor:default;color:inherit}
+.opt.good{background:var(--green);border-color:#2faa2f;animation:pulse .5s}
+.opt.bad{background:var(--red);border-color:#ff4d4d;animation:shake .4s}
+@keyframes pulse{50%{transform:scale(1.03)}}
+@keyframes shake{25%{transform:translateX(-8px)}50%{transform:translateX(8px)}75%{transform:translateX(-5px)}}
+.stats{display:flex;justify-content:center;gap:28px;margin:16px 0 20px}
+.stats div{font:800 1.8rem Outfit,sans-serif}.stats small{display:block;font:500 .8rem Inter;color:var(--mut)}
+.rank{font:800 1.5rem Outfit;color:var(--gold);margin:4px 0}
+.row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.ghost{background:transparent;border:1px solid var(--line);border-radius:14px;padding:14px 22px;font-weight:600}
+.cf{position:fixed;width:9px;height:9px;border-radius:2px;pointer-events:none;z-index:9;animation:cf .9s ease-out forwards}
+@keyframes cf{to{transform:translate(var(--x),var(--y)) rotate(540deg);opacity:0}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main class="frame"><div class="card">
+
+<section id="start" class="c">
+<svg viewBox="0 0 320 130" width="100%" style="max-width:320px" role="img" aria-label="Mount Kenya with a Maasai shield">
+<circle cx="250" cy="34" r="16" fill="#D97706"/>
+<path d="M0 130 L70 70 L100 90 L150 22 L215 130Z" fill="#006600"/>
+<path d="M150 22 L168 50 L156 46 L148 56 L136 44Z" fill="#F8FAFC"/>
+<path d="M95 130 L200 62 L260 130Z" fill="#0f3d0f"/>
+<ellipse cx="270" cy="92" rx="17" ry="30" fill="#BB0000" stroke="#F8FAFC" stroke-width="3"/>
+<ellipse cx="270" cy="92" rx="6" ry="12" fill="#0D1117" stroke="#F8FAFC" stroke-width="2"/>
+<path d="M270 56 V128" stroke="#F8FAFC" stroke-width="2"/>
+</svg>
+<h1>Kenya Safari Quiz</h1>
+<p class="sub">Ten questions a round. Rounds never run out.</p>
+<div class="pills" id="pills">
+<button class="pill" data-d="casual" aria-pressed="false">Casual</button>
+<button class="pill" data-d="mwananchi" aria-pressed="true">Mwananchi</button>
+<button class="pill" data-d="mashujaa" aria-pressed="false">Mashujaa</button>
+</div>
+<button class="go" id="play">Start Safari</button>
+<div class="best" id="best"></div>
+</section>
+
+<section id="game" class="hide">
+<div class="hud"><span id="cnt"></span><span class="sc">Score <b id="score">0</b></span><span class="fl" id="fl">🔥 0x</span></div>
+<div class="segs" id="segs"></div>
+<div class="tm"><div class="bar"><div id="bar"></div></div><span class="tt" id="tt"></span></div>
+<span class="tag" id="cat"></span>
+<p class="q" id="q"></p>
+<div class="ans" id="ans"></div>
+</section>
+
+<section id="end" class="hide c">
+<h2 style="margin:0;font-size:1.4rem">Round complete</h2>
+<div class="rank" id="rank"></div>
+<div class="stats">
+<div id="fs">0<small>Final score</small></div>
+<div id="acc">0%<small>Accuracy</small></div>
+<div id="bs">0<small>Best streak</small></div>
+</div>
+<div class="best" id="nb"></div>
+<div class="row" style="margin-top:16px">
+<button class="go" id="again">Play Again</button>
+<button class="ghost" id="menu">Change level</button>
+</div>
+</section>
+
+</div></main>
+<script>
+const Q=`Geography|1|What is the capital city of Kenya?|Nairobi|Mombasa|Kisumu|Nakuru
+Geography|1|Which is Kenya’s highest mountain?|Mount Kenya|Mount Elgon|Mount Longonot|Mount Kilimanjaro
+Geography|1|Which ocean borders Kenya’s coast?|Indian Ocean|Atlantic Ocean|Pacific Ocean|Arctic Ocean
+Geography|1|Kisumu city sits on the shores of which lake?|Lake Victoria|Lake Nakuru|Lake Naivasha|Lake Baringo
+Geography|1|Mount Kilimanjaro is visible from which Kenyan park?|Amboseli|Aberdare|Hell’s Gate|Meru
+Geography|1|Which port city is Kenya’s second largest?|Mombasa|Kisumu|Eldoret|Nakuru
+Geography|1|How many counties does Kenya have?|47|42|50|8
+Geography|2|How many countries share a land border with Kenya?|5|3|4|6
+Geography|2|Which Kenyan town does the Equator pass through?|Nanyuki|Mombasa|Garissa|Malindi
+Geography|2|Which is the world’s largest permanent desert lake?|Lake Turkana|Lake Naivasha|Lake Bogoria|Lake Magadi
+Geography|2|Which freshwater Rift Valley lake lies next to Hell’s Gate?|Lake Naivasha|Lake Turkana|Lake Magadi|Lake Elementaita
+Geography|2|Which three countries share Lake Victoria?|Kenya, Uganda, Tanzania|Kenya, Ethiopia, Sudan|Kenya, Rwanda, Burundi|Kenya, Somalia, Uganda
+Geography|2|Which lake near Nakuru town is famed for flamingos?|Lake Nakuru|Lake Victoria|Lake Jipe|Lake Chala
+Geography|2|Which island town is a UNESCO World Heritage Site?|Lamu|Kilifi|Kwale|Voi
+Geography|3|Nairobi’s name comes from a Maasai phrase meaning…|Cool waters|Place of lions|Big hill|Green plains
+Geography|3|Which is Kenya’s largest county by area?|Marsabit|Turkana|Garissa|Narok
+Geography|3|What is the highest peak of Mount Kenya?|Batian|Nelion|Lenana|Point Pigott
+Geography|3|The Maasai Mara National Reserve is in which county?|Narok|Kajiado|Laikipia|Samburu
+Wildlife|1|Which animal is NOT part of the Big Five?|Giraffe|Lion|Buffalo|Leopard
+Wildlife|1|Which river do wildebeest cross in the Great Migration?|Mara River|Tana River|Athi River|Nzoia River
+Wildlife|1|Which is the fastest land animal?|Cheetah|Lion|Leopard|Zebra
+Wildlife|1|Which national park sits beside Nairobi’s skyline?|Nairobi National Park|Tsavo East|Aberdare|Lake Nakuru
+Wildlife|1|What is a group of lions called?|Pride|Herd|Pack|Flock
+Wildlife|2|Which animals terrorised railway workers at Tsavo in 1898?|Lions|Leopards|Hyenas|Crocodiles
+Wildlife|2|Which park is famous for elephants beneath Kilimanjaro?|Amboseli|Ruma|Marsabit|Kora
+Wildlife|2|Which animals hold the shield on Kenya’s coat of arms?|Lions|Elephants|Leopards|Buffalo
+Wildlife|3|Which conservancy is home to the last two northern white rhinos?|Ol Pejeta|Lewa|Solio|Ol Donyo Sabuk
+Wildlife|3|Which narrow-striped zebra lives in northern Kenya?|Grevy’s zebra|Plains zebra|Mountain zebra|Cape zebra
+Wildlife|3|Which animal is one of the Samburu Special Five?|Gerenuk|Hippo|Black rhino|Eland
+History|1|Who was Kenya’s first president?|Jomo Kenyatta|Daniel arap Moi|Mwai Kibaki|Tom Mboya
+History|1|In which year did Kenya gain independence?|1963|1960|1957|1970
+History|1|Who was Kenya’s third president?|Mwai Kibaki|Uhuru Kenyatta|Daniel arap Moi|Raila Odinga
+History|1|Which Kenyan woman won the Nobel Peace Prize in 2004?|Wangari Maathai|Lupita Nyong’o|Grace Ogot|Charity Ngilu
+History|2|On what date is Jamhuri Day?|12 December|1 June|20 October|27 August
+History|2|Which anti-colonial uprising took place in the 1950s?|Mau Mau uprising|Maji Maji rebellion|Nandi resistance|Herero uprising
+History|2|In which year was Kenya’s current constitution promulgated?|2010|2002|2007|1992
+History|2|The Uganda Railway began at which coastal city?|Mombasa|Malindi|Lamu|Kilifi
+History|2|Which people built Fort Jesus in Mombasa?|Portuguese|British|Dutch|Germans
+History|2|The name Jomo is often said to mean…|Burning spear|Mountain lion|Wise elder|River stone
+History|2|Which holiday on 1 June marks internal self-rule?|Madaraka Day|Mashujaa Day|Jamhuri Day|Labour Day
+History|3|Which Mau Mau leader was captured in 1956?|Dedan Kimathi|Stanley Mathenge|Waruhiu wa Kung’u|Bildad Kaggia
+History|3|In which year did Kenya become a republic?|1964|1963|1969|1978
+History|3|On what date is Mashujaa Day?|20 October|12 December|1 June|10 November
+History|3|Which politician was assassinated in Nairobi in 1969?|Tom Mboya|Pio Gama Pinto|J.M. Kariuki|Ronald Ngala
+History|3|Who wrote “Facing Mount Kenya”?|Jomo Kenyatta|Ngũgĩ wa Thiong’o|Binyavanga Wainaina|Meja Mwangi
+Sheng & Culture|1|What does “Jambo” mean in Kiswahili?|Hello|Goodbye|Thank you|Friend
+Sheng & Culture|1|What does “Harambee” mean?|Let’s pull together|Freedom|Welcome|Hurry up
+Sheng & Culture|1|What is a “matatu”?|A minibus taxi|A traditional dance|A maize dish|A type of drum
+Sheng & Culture|1|What does “uhuru” mean?|Freedom|Unity|Peace|Hard work
+Sheng & Culture|1|The red checked cloth worn by the Maasai is a…|Shuka|Kanga|Kitenge|Kikoi
+Sheng & Culture|1|What does the Sheng word “msee” mean?|Guy|Money|Car|House
+Sheng & Culture|1|What does “dem” mean in Sheng?|Girl|Boy|Friend|Elder
+Sheng & Culture|2|What does the Sheng word “ganji” mean?|Money|Food|Phone|Police
+Sheng & Culture|2|What does “fiti” mean in Sheng?|Fine or cool|Tired|Hungry|Late
+Sheng & Culture|2|Kenya’s official languages are…|English and Kiswahili|English and Kikuyu|Kiswahili and Luo|English and Somali
+Sheng & Culture|2|Which community is the largest in Kenya?|Kikuyu|Luhya|Luo|Kalenjin
+Sheng & Culture|2|The Maasai “adumu” dance is known for…|High jumping|Drum circles|Pot balancing|Fire walking
+Sheng & Culture|2|Which city is nicknamed the “Silicon Savannah”?|Nairobi|Kisumu|Mombasa|Eldoret
+Sheng & Culture|3|In Sheng, “kanjo” refers to…|City council askaris|Matatu conductors|Street food sellers|Bank tellers
+Food|1|Which maize-flour staple is eaten across Kenya?|Ugali|Pilau|Biryani|Chapati
+Food|1|What is “nyama choma”?|Roasted meat|Fried fish|Boiled maize|Stewed beans
+Food|1|“Sukuma wiki” is a dish of which greens?|Kale|Cabbage|Pumpkin leaves|Amaranth
+Food|2|Githeri is a mix of maize and what?|Beans|Rice|Potatoes|Lentils
+Food|2|Mursik, a fermented milk drink, comes from which community?|Kalenjin|Luo|Kamba|Mijikenda
+Sports & Tech|1|Which Kenyan ran a sub-two-hour marathon in Vienna in 2019?|Eliud Kipchoge|David Rudisha|Kip Keino|Geoffrey Kamworor
+Sports & Tech|1|What does “pesa” in M-Pesa mean?|Money|Phone|Mobile|Pay
+Sports & Tech|2|What is Kenya’s national football team nicknamed?|Harambee Stars|Simba Boys|Black Rhinos|Safari Eagles
+Sports & Tech|2|What is Kenya’s rugby sevens team nicknamed?|Shujaa|Simbas|Chui|Twiga
+Sports & Tech|3|Who won 1500m Olympic gold for Kenya in 1968?|Kip Keino|Henry Rono|Paul Tergat|Moses Kiptanui
+Sports & Tech|3|Who holds the men’s 800m world record of 1:40.91?|David Rudisha|Wilson Kipketer|Nixon Chepseba|Alfred Kirwa Yego`
+.split('\n').map(l=>{const[c,d,q,a,...w]=l.split('|');return{c,d:+d,q,a,o:[a,...w]}});
+
+const $=s=>document.querySelector(s);
+const D={casual:{t:20,f:q=>q.d<2},mwananchi:{t:15,f:q=>q.d<3},mashujaa:{t:12,f:q=>q.d>1}};
+const L='ABCD',N=10;
+let diff='mwananchi',used=new Set(),qs=[],i=0,score=0,streak=0,bestStreak=0,right=0,tm=null,lock=false,opts=[];
+const shuffle=a=>{for(let j=a.length-1;j>0;j--){const k=Math.floor(Math.random()*(j+1));[a[j],a[k]]=[a[k],a[j]]}return a};
+const store={get(){try{return +localStorage.getItem('kq-best-'+diff)||0}catch(e){return 0}},set(v){try{localStorage.setItem('kq-best-'+diff,v)}catch(e){}}};
+const screen=id=>['start','game','end'].forEach(s=>$('#'+s).classList.toggle('hide',s!==id));
+const bestLine=()=>{const b=store.get();$('#best').textContent=b?'Best score on this level: '+b:''};
+
+document.querySelectorAll('.pill').forEach(p=>p.onclick=()=>{diff=p.dataset.d;document.querySelectorAll('.pill').forEach(x=>x.setAttribute('aria-pressed',x===p));bestLine()});
+$('#play').onclick=$('#again').onclick=startRound;
+$('#menu').onclick=()=>{screen('start');bestLine()};
+
+function startRound(){
+  let p=Q.filter(D[diff].f).filter(q=>!used.has(q));
+  if(p.length<N){used.clear();p=Q.filter(D[diff].f)}
+  qs=shuffle(p).slice(0,N);qs.forEach(q=>used.add(q));
+  i=0;score=0;streak=0;bestStreak=0;right=0;
+  $('#segs').innerHTML='<i></i>'.repeat(N);
+  screen('game');hud();show();
+}
+function hud(){$('#score').textContent=score;$('#fl').textContent='🔥 '+streak+'x';$('#cnt').textContent='Question '+(i+1)+' / '+N}
+function show(){
+  lock=false;const q=qs[i];hud();
+  [...$('#segs').children].forEach((s,k)=>{if(k===i)s.className='cur'});
+  $('#cat').textContent=q.c;$('#q').textContent=q.q;
+  opts=shuffle([...q.o]);$('#ans').innerHTML='';
+  opts.forEach((t,k)=>{const b=document.createElement('button');b.className='opt';
+    b.innerHTML='<b>'+L[k]+'</b><span></span><em></em>';b.children[1].textContent=t;b.onclick=()=>answer(k,b);$('#ans').appendChild(b)});
+  const max=D[diff].t,t0=Date.now();clearInterval(tm);
+  tm=setInterval(()=>{const left=Math.max(0,max-(Date.now()-t0)/1000),f=left/max;
+    $('#bar').style.width=f*100+'%';$('#bar').style.background=f>.5?'#006600':f>.25?'#D97706':'#BB0000';
+    $('#tt').textContent=Math.ceil(left)+'s';window._left=left;if(left<=0)answer(-1)},100);
+}
+function answer(k,btn){
+  if(lock)return;lock=true;clearInterval(tm);
+  const q=qs[i],ci=opts.indexOf(q.a),seg=$('#segs').children[i],bs=$('#ans').children;
+  [...bs].forEach(b=>b.disabled=true);
+  bs[ci].classList.add('good');bs[ci].querySelector('em').textContent='✓';
+  if(k===ci){
+    streak++;right++;bestStreak=Math.max(bestStreak,streak);
+    const m=1+Math.floor((streak-1)/3)*.5;score+=Math.round((100+Math.round((window._left||0)*5))*m);
+    seg.className='ok';burst(bs[ci]);
+  }else{
+    streak=0;seg.className='no';
+    if(k>-1){bs[k].classList.add('bad');bs[k].querySelector('em').textContent='✕'}
+  }
+  $('#score').textContent=score;$('#fl').textContent='🔥 '+streak+'x';
+  setTimeout(()=>{i++;i<N?show():finish()},1500);
+}
+function burst(el){
+  const r=el.getBoundingClientRect(),cols=['#BB0000','#006600','#D97706','#F8FAFC'];
+  for(let n=0;n<22;n++){const s=document.createElement('span');s.className='cf';
+    s.style.cssText='left:'+(r.left+r.width/2)+'px;top:'+(r.top+r.height/2)+'px;background:'+cols[n%4]+';--x:'+(Math.random()*240-120)+'px;--y:'+(Math.random()*-140-20)+'px';
+    document.body.appendChild(s);setTimeout(()=>s.remove(),950)}
+}
+function finish(){
+  const acc=Math.round(right/N*100);
+  const rank=acc>=90?'Elder of the Burning Spear':acc>=75?'Safari Guide':acc>=55?'Nairobi Local':acc>=35?'Weekend Wanderer':'Tourist';
+  const old=store.get();
+  $('#rank').textContent=rank;
+  $('#fs').firstChild.nodeValue=score;$('#acc').firstChild.nodeValue=acc+'%';$('#bs').firstChild.nodeValue=bestStreak;
+  if(score>old){store.set(score);$('#nb').textContent='New best score on this level!'}
+  else $('#nb').textContent=old?'Best on this level: '+old:'';
+  screen('end');
+}
+bestLine();
+</script>
+</body>
+</html>
